@@ -8,6 +8,7 @@ run_list(
 
 default_attributes(
   "postgresql" => {
+    "listen_addresses" => "0.0.0.0",
     "version" => "9.2",
     "ssl" => false,
     "pg_hba" => [

@@ -13,10 +13,18 @@ bundle_cmd                = "bundle"
 first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
-rails_postgresql_password = secure_password
 
-node.set_unless["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
-node.save
+# this awkward conditional is to account for not storing plaintext
+# passwords in the open source repository. The node attribute will be
+# be used in the first part if it exists, and fall back to generating
+# a random password (and saving the node to the server).
+if node['application'].attribute?("rails_postgresql_password_#{rails_env}")
+  rails_postgresql_password = node['application']["rails_postgresql_password_#{rails_env}"]
+else
+  rails_postgresql_password = secure_password
+  node.set_unless["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
+  node.save
+end
 
 # application directory
 directory "/applications/#{app['id']}" do
@@ -26,18 +34,10 @@ directory "/applications/#{app['id']}" do
   recursive true
 end
 
-Chef::Log.info("app: #{app}")
-Chef::Log.info("rails_env: #{rails_env}")
-Chef::Log.info("rails_root: #{rails_root}")
-Chef::Log.info("app_env: #{app_env}")
-Chef::Log.info("db_name: #{db_name}")
-Chef::Log.info("rails_postgresql_user: #{rails_postgresql_user}")
-Chef::Log.info("rails_postgresql_password: #{rails_postgresql_password}")
-
 # create a DB user
 pg_user rails_postgresql_user do
   privileges superuser: false, createdb: false, login: true
-  password rails_postgresql_password #node["application"]["rails_postgresql_password_#{rails_env}"]
+  password rails_postgresql_password
 end
 
 # create a database
@@ -66,8 +66,7 @@ application "rubygems" do
       adapter "postgresql"
       database db_name
       username app['id']
-      password rails_postgresql_password # node["application"]["rails_postgresql_password_#{rails_env}"]
-      host "localhost"
+      password rails_postgresql_password
     end
   end
   r.cookbook_name = "rubygems"
