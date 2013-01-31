@@ -79,3 +79,24 @@ If you wish to modify the knife configuration, e.g. AWS options for
 ## Private keys
 
 Any private keys you see in this repo are "trash keys" that are not used in production, they are for *testing only*.
+
+## Chef Server
+
+Add to .chef/knife.local.rb the chef server settings like above
+example, and the cookbook path:
+
+```ruby
+cookbook_path [
+  File.expand_path("../../chef/cookbooks", __FILE__),
+  File.expand_path("../../chef/site-cookbooks", __FILE__)
+]
+```
+
+Use the following knife commands to upload to the chef server.
+
+```sh
+knife role from file chef/roles/*.rb
+knife data bag from file users chef/data_bags/users/*.json
+knife data bag from file apps chef/data_bags/users/*.json
+knife cookbook upload -a
+```
