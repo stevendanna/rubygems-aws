@@ -97,6 +97,6 @@ Use the following knife commands to upload to the chef server.
 ```sh
 knife role from file chef/roles/*.rb
 knife data bag from file users chef/data_bags/users/*.json
-knife data bag from file apps chef/data_bags/users/*.json
+knife data bag from file apps chef/data_bags/apps/*.json
 knife cookbook upload -a
 ```
