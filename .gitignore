@@ -3,4 +3,5 @@ chef/cookbooks
 cookbooks
 tmp
 .chef/knife.local.rb
+.chef/checksums
 chef.tar.gz
