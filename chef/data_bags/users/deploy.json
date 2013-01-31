@@ -1,5 +1,5 @@
 {
-  "username": "deploy",
+  "id": "deploy",
   "comment": "Application Deployment",
   "password": "$1$OghAZXA4$agFSQnk5/bJVs8rA8SaSh1",
   "ssh_keys": [
