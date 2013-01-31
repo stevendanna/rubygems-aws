@@ -1,5 +1,6 @@
 {
   "id": "jtimberman",
+  "groups": ["sysadmin"],
   "comment": "Joshua Timberman",
   "password": "$1$.8MBhDjR$Viqd9upoNNQjHjs4WohMD0",
   "ssh_keys": [
