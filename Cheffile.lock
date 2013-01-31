@@ -64,6 +64,13 @@ SITE
     zsh (1.0.0)
 
 GIT
+  remote: https://github.com/fnichol/chef-user
+  ref: master
+  sha: 1b52f8d41c0a320d29fa5e695393bef583e87ca8
+  specs:
+    user (0.3.1)
+
+GIT
   remote: https://github.com/phlipper/chef-denyhosts
   ref: master
   sha: cead32d2dc8cad24a261b6abf42ffb30a797704c
@@ -96,9 +103,9 @@ GIT
 GIT
   remote: https://github.com/phlipper/chef-postgresql
   ref: master
-  sha: 0794e0ce26ef449a160a0d58f2a2f72be56edc95
+  sha: 0d7bd3d8a3c5e3a07ea42c7733aa1f0d3c5ab403
   specs:
-    postgresql (0.7.0)
+    postgresql (0.8.0)
       apt (>= 0.0.0)
 
 GIT
@@ -151,6 +158,7 @@ DEPENDENCIES
   sudo (>= 0)
   sysstat (>= 0)
   tmux (>= 0)
+  user (>= 0)
   users (>= 0)
   xml (>= 0)
   xslt (>= 0)
