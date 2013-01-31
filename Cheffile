@@ -60,3 +60,4 @@ cookbook "user",
 cookbook "xml"
 cookbook "xslt"
 cookbook "zsh"
+cookbook "emacs"

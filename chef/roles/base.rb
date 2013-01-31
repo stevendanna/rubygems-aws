@@ -9,7 +9,8 @@ run_list(
   "role[shell]",
   "role[security]",
   "role[monitoring]",
-  "role[mailer]"
+  "role[mailer]",
+  "recipe[emacs]"
 )
 
 default_attributes(
