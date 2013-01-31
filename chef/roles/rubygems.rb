@@ -7,6 +7,7 @@ run_list(
   "recipe[nginx::server]",
   "recipe[nodejs]",
   "recipe[postgresql::libpq]",
+  "recipe[rubygems]",
   "recipe[rubygems::environment_variables]",
   "recipe[rubygems::monit]",
   "recipe[rubygems::rails]",

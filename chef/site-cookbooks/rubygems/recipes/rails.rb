@@ -3,7 +3,7 @@
 # Recipe:: rails
 #
 
-app                       = data_bag_item(:apps, "rubygems")
+app                       = node.run_state[:app]
 rails_env                 = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
 rails_root                = app['rails_root']
 app_env                   = "#{app['id']}-#{rails_env}"
@@ -14,7 +14,6 @@ db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
 rails_postgresql_password = Digest::MD5.hexdigest(app_env.reverse).reverse.tr("A-Za-z", "N-ZA-Mn-za-m")
 
-node.set["application"] = app.to_hash
 node.set["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
 node.save
 
