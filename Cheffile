@@ -54,6 +54,9 @@ cookbook "sudo"
 cookbook "sysstat"
 cookbook "tmux"
 cookbook "users"
+cookbook "user",
+  git: "https://github.com/fnichol/chef-user"
+
 cookbook "xml"
 cookbook "xslt"
 cookbook "zsh"
