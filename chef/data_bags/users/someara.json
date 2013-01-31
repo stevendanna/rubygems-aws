@@ -1,0 +1,8 @@
+{
+  "id": "someara",
+  "comment": "Sean OMeara",
+  "password": "$1$.8MBhDjR$Viqd9upoNNQjHjs4WohMD0",
+  "ssh_keys": [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAv5UkvKrwquy5Aa8erUtZL+JnmJF8Hkqoh/JKdgYDgRPP54q6I4Tg5WmtLjo/Ar5K8s9ExG6AiE/l1T/aBTJsZuEcQpC2m5aDrxo9ujBJas3TzmuLR9bLW4FPJei66PHsm6B5a1ncMqayIGc+OH5cxCBlG+LsrZMUIJBfyCK0KeoYuLt455vRw7fInMRLnZR7Ezm0ha99btMn/ihvSfTja3Xkai612d3H+sWREvzhPsm4h7A/501tPNm7a7+5t6t/m3JbKHl/yDy0w8yt73qOmrglK+3AIjWYMUNTSC25IiF2Jn6eSOIviVbJGlijGT9LlfpjuW0LHzpfASNL2+udyQ== someara@navi"
+  ]
+}

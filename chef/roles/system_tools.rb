@@ -8,5 +8,6 @@ run_list(
   "recipe[rsync]",
   "recipe[rubygems::system_ruby]",
   "recipe[xml]",
-  "recipe[xslt]"
+  "recipe[xslt]",
+  "recipe[git]"
 )
