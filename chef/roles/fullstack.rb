@@ -1,10 +1,10 @@
 name "fullstack"
-description "The role which contains all cookbooks for a 'full-stack' server."
+description "Servers for running the entire RubyGems.org application stack"
 run_list(
   "role[base]",
   "role[rubygems_memcached]",
-  "recipe[redis::server]",
-  "recipe[postgresql::server]",
+  "role[rubygems_redis]",
+  "role[rubygems_db_master]",
   "role[rubygems]",
-  "role[balancer]"
+  "role[rubygems_lb]"
 )
