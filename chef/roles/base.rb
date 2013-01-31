@@ -16,8 +16,9 @@ run_list(
 default_attributes(
   "authorization" => {
     "sudo" => {
-      "users" => ["phlipper", "samkottler", "dwradcliffe"],
-      "groups" => ["sysadmins"]
+      "users" => ["ubuntu"],
+      "groups" => ["sysadmin"],
+      "passwordless" => true
     }
   },
   "denyhosts" => {

@@ -3,35 +3,33 @@
 # Recipe:: rails
 #
 
-rails_root        = node["application"]["rails_root"]
-rails_env         = node["application"]["rails_env"]
-app_env           = "#{node["application"]["name"]}-#{node["application"]["rails_env"]}"
-sudo_name         = app_env.tr("-", "_").upcase
-bundle_cmd        = "bundle"
-company_name      = node["application"]["company_name"]
-first_server_name = node["application"]["server_names"][0]
+app                       = data_bag_item(:apps, "rubygems")
+rails_env                 = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
+rails_root                = app['rails_root']
+app_env                   = "#{app['id']}-#{rails_env}"
+sudo_name                 = app_env.tr("-", "_").upcase
+bundle_cmd                = "bundle"
+first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
-rails_postgresql_user     = node["application"]["name"]
+rails_postgresql_user     = app["id"]
 rails_postgresql_password = Digest::MD5.hexdigest(app_env.reverse).reverse.tr("A-Za-z", "N-ZA-Mn-za-m")
 
-# # application directory
-directory "/applications" do
-  owner  "deploy"
-  group  "deploy"
-  action :create
-end
+node.set["application"] = app.to_hash
+node.set["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
+node.save
 
 # application directory
-directory "/applications/#{node["application"]["name"]}" do
+directory "/applications/#{app['id']}" do
   owner  "deploy"
   group  "deploy"
   action :create
+  recursive true
 end
 
 # create a DB user
 pg_user rails_postgresql_user do
   privileges superuser: false, createdb: false, login: true
-  password rails_postgresql_password
+  password node['application']['rails_postgresql_password_#{rails_env}']
 end
 
 # create a database
@@ -43,8 +41,9 @@ pg_database db_name do
 end
 
 application "rubygems" do
-  path node["application"]["rails_root"]
-  repository node["application"]["repository"]
+  path app['rails_root']
+  repository app['repository']
+  revision app['revision']
   owner "deploy"
   group "deploy"
   packages %w{libpq-dev}

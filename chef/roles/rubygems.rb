@@ -12,3 +12,7 @@ run_list(
   "recipe[rubygems::rails]",
   "recipe[rubygems::rails_nginx]"
 )
+
+default_attributes(
+  # application data is in the apps/rubygems data bag
+)
