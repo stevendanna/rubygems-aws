@@ -2,6 +2,7 @@
 # Cookbook Name:: rubygems
 # Recipe:: rails
 #
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 app                       = node.run_state[:app]
 rails_env                 = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
@@ -12,9 +13,9 @@ bundle_cmd                = "bundle"
 first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
-rails_postgresql_password = Digest::MD5.hexdigest(app_env.reverse).reverse.tr("A-Za-z", "N-ZA-Mn-za-m")
+rails_postgresql_password = secure_password
 
-node.set["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
+node.set_unless["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
 node.save
 
 # application directory
@@ -36,12 +37,12 @@ Chef::Log.info("rails_postgresql_password: #{rails_postgresql_password}")
 # create a DB user
 pg_user rails_postgresql_user do
   privileges superuser: false, createdb: false, login: true
-  password node['application']['rails_postgresql_password_#{rails_env}']
+  password rails_postgresql_password #node["application"]["rails_postgresql_password_#{rails_env}"]
 end
 
 # create a database
 pg_database db_name do
-  owner rails_postgresql_user
+  owner app['id']
   encoding "utf8"
   template "template0"
   locale "en_US.UTF8"
@@ -60,11 +61,12 @@ application "rubygems" do
     gems %w{bundler}
     bundle_command "/usr/local/bin/bundle"
     database_template "database.yml.erb"
+    database_master_role "rubygems_db_master"
     database do
       adapter "postgresql"
       database db_name
-      username rails_postgresql_user
-      password rails_postgresql_password
+      username app['id']
+      password rails_postgresql_password # node["application"]["rails_postgresql_password_#{rails_env}"]
       host "localhost"
     end
   end
