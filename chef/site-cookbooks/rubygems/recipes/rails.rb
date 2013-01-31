@@ -25,6 +25,14 @@ directory "/applications/#{app['id']}" do
   recursive true
 end
 
+Chef::Log.info("app: #{app}")
+Chef::Log.info("rails_env: #{rails_env}")
+Chef::Log.info("rails_root: #{rails_root}")
+Chef::Log.info("app_env: #{app_env}")
+Chef::Log.info("db_name: #{db_name}")
+Chef::Log.info("rails_postgresql_user: #{rails_postgresql_user}")
+Chef::Log.info("rails_postgresql_password: #{rails_postgresql_password}")
+
 # create a DB user
 pg_user rails_postgresql_user do
   privileges superuser: false, createdb: false, login: true
