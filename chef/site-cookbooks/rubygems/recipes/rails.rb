@@ -20,6 +20,8 @@ else
   rails_postgresql_password = search(:node, "roles:rubygems_db_master")[0]['application']["rails_postgresql_password_#{rails_env}"]
 end
 
+run_migrations = false
+
 # Ensure that both the migration role AND the attribute are set before
 # we run migrations.
 if node['roles'].include?("rubygems_run_migrations") && node['application']['rubygems']['run_migrations']
