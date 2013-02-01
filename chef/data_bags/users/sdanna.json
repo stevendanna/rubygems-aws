@@ -1,0 +1,9 @@
+{
+  "id": "sdanna",
+  "groups": ["sysadmin"],
+  "comment": "Steven Danna",
+  "shell": "\/bin\/bash",
+  "ssh_keys": [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZjGiUUSfLWUtZwKWJT0sYzFXYt0NRFm4TjtWdQeAWZnvPh0WZ5xX1BbKK/SdTsnlljaNVfqwqjWsk9qK11h+5oM7riZq8rUpAyvLgu36ADYq54EvHHs/6tBc80fBPHGFNr4WMyPncgB2LE86p1EdsJWwosbnY5QvdV+g81PiDgREgzNbL78c5K7Z/V8rCg6KxRyvGca3FgxZgDM5qiKmHRiuxCdCFGzzpiiqV9rCpfJ6b0nKG/6zAMS0Wbcz/fKsxUhpo8TY53u9c/0OrfkVTnAfaLXge7wwBp0mnYHoNJ52mRdvvgMcFsYAvw2OuWdTIyTXX2GmSeD7TRlF+OP2WXUnpUioULGY0TkDhnraN2BFnl8lnfHce+unHexXpRvt70FPP49Hql8lXWT9JnP9WflEQhAIO5VZVLB+yHPWiBanWBqkkhAE6y2Zuzhzg+kG3S09bHaK0egevdcn0f/gdBfOJCY/a+38eauIJByLuCWa1T1qSveexyrT2Nkmi/gRkmjwLvZxm96rpT9X59aFjpfo6V7rEUlXjpXW1qyB5dCtMT4OYv4/EzGNTfnz9O5c0lw+uH83RmZMEWQIP7N+ga8vfRO7GTG6uWTugqg1+nSLv22TglbdgDzz2dD5r5gKnSt4se/AVL1muTG5m6SV8xZFfjZXkWcFxol8u4Ww0OQ== steve@opscode.com"
+  ]
+}
