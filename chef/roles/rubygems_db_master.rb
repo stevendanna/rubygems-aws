@@ -4,6 +4,7 @@ description "The role for the primary database server for the RubyGems.org app"
 run_list(
   "role[base]",
   "recipe[postgresql::server]",
+  "recipe[rubygems]",
   "recipe[rubygems::rails_database]"
 )
 

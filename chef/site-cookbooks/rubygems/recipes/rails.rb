@@ -14,9 +14,11 @@ first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
 
-rubygems_db_masters = search(:node, "role:rubygems_db_master AND chef_environment:#{node.chef_environment}")
-if rubygems_db_masters.empty? then rubygems_db_masters << node
-rails_postgresql_password = rubygems_db_master[0]['application']["rails_postgresql_password_#{rails_env}"]
+if node.roles.include?("rubygems_db_master")
+  rails_postgresql_password = node['application']["rails_postgresql_password_#{rails_env}"]
+else
+  rails_postgresql_password = search(:node, "roles:rubygems_db_master")[0]['application']["rails_postgresql_password_#{rails_env}"]
+end
 
 # application directory
 directory "/applications/#{app['id']}" do
