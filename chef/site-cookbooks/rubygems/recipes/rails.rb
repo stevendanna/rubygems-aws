@@ -36,7 +36,7 @@ application "rubygems" do
   owner "deploy"
   group "deploy"
   packages %w{libpq-dev}
-  migrate true
+  migrate node['roles'].include?('rubygems_db_master')
 
   r = rails do
     gems %w{bundler}
@@ -56,6 +56,7 @@ application "rubygems" do
     port "3000"
     bundler true
     bundle_command "/usr/local/bin/bundle"
+    only_if { node['roles'].include?('rubygems_unicorn') }
   end
 end
 
