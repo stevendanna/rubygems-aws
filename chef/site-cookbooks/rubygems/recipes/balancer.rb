@@ -3,6 +3,8 @@
 # Recipe:: rails_nginx
 #
 
+include_recipe "rubygems::default"
+
 app_env = "#{node["application"]["name"]}-#{node["application"]["rails_env"]}"
 
 # ssl certificates directory
@@ -31,6 +33,9 @@ cookbook_file "#{node["nginx"]["dir"]}/certs/#{node["application"]["ssl_cert"]}"
   notifies :reload, "service[nginx]", :immediately
 end
 
+Chef::Log.info("DEBUG: nginx dir: #{node["nginx"]["dir"]}")
+Chef::Log.info("DEBUG: application ssl_key: #{node["application"]["ssl_key"]}")
+
 # vhost configuration
 template "#{node["nginx"]["dir"]}/sites-available/#{app_env}-balancer.conf" do
   source "nginx_balancer.conf.erb"
@@ -52,6 +57,8 @@ template "#{node["nginx"]["dir"]}/sites-available/#{app_env}-balancer.conf" do
   )
   notifies :reload, "service[nginx]", :immediately
 end
+
+
 
 # symlink to sites-enabled
 link "#{node["nginx"]["dir"]}/sites-enabled/#{app_env}-balancer.conf" do
