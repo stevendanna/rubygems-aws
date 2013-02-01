@@ -3,6 +3,9 @@ SITE
   specs:
     apache2 (1.4.2)
     application (2.0.0)
+    application_nginx (1.0.2)
+      application (>= 0.0.0)
+      nginx (>= 0.0.0)
     application_ruby (1.0.10)
       apache2 (>= 0.0.0)
       application (>= 0.0.0)
@@ -127,6 +130,7 @@ GIT
 
 DEPENDENCIES
   application (>= 0)
+  application_nginx (>= 0)
   application_ruby (>= 0)
   apt (= 1.7.0)
   aws (>= 0)

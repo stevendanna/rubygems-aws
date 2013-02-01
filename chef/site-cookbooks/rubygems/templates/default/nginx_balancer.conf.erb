@@ -1,26 +1,17 @@
-# UPSTREAM RAILS
-# this can be any application server, not just Unicorn/Rainbows!
-upstream rails_<%= @app_server["name"] %> {
-  # fail_timeout=0 means we always retry an upstream even if it failed
-  # to return a good HTTP response (in case the Unicorn master nukes a
-  # single worker for timing out).
-
-  # for UNIX domain socket setups:
-  # serverr unix:<%= @rails_root %>/shared/tmp/sockets/<%= @app_server["name"] %>.sock fail_timeout=0;
-  <% node["application"]["application_servers"].each do |upstream_ip| %>
-  server <%= upstream_ip %>:<%= node["application"]["internal_port"] -%> fail_timeout=0;
+upstream <%= @resource.application.name %> {
+  <% @hosts.each do |node| %>
+  server <%= node.attribute?('cloud') ? node['cloud']['local_ipv4'] : node['ipaddress'] %>:<%= @resource.application_port %> fail_timeout=0;
   <% end %>
 }
 
-# HTTP
 server {
   # port to listen on. Can also be set to an IP:PORT
   listen 80 default;
 
   # sets the domain[s] that this vhost server requests for
-  server_name <%= @server_names.join(" ") %>;
+  server_name <%= @resource.server_name.is_a?(Array) ? @resource.server_name.join(' ') : @resource.server_name %>;
 
-  <% if @use_ssl && @force_ssl %>
+  <% if @resource.ssl %>
     # redirect all requests to SSL
     rewrite ^(.*) https://$host$1 permanent;
   <% else %>
@@ -28,23 +19,23 @@ server {
     proxy_set_header Host $host;
     proxy_redirect off;
     location / {
-      proxy_pass http://rails_<%= @app_server["name"] %>;
+      proxy_pass http://<%= @resource.application.name %>;
     }
   <% end %>
 }
 
-<% if @use_ssl %>
+<% if @resource.ssl %>
 # HTTPS
 server {
   # port to listen on. Can also be set to an IP:PORT
   listen 443 default ssl;
 
-  server_name <%= @server_names.join(" ") %>;
+  server_name <%= @resource.server_name.is_a?(Array) ? @resource.server_name.join(' ') : @resource.server_name %>;
 
   # SSL settings
   ssl                         on;
-  ssl_certificate             <%= @ssl_cert %>;
-  ssl_certificate_key         <%= @ssl_key %>;
+  ssl_certificate             <%= @resource.ssl_certificate %>;
+  ssl_certificate_key         <%= @resource.ssl_certificate_key %>;
   ssl_protocols               SSLv3 TLSv1;
   ssl_ciphers                 ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
   ssl_prefer_server_ciphers   on;
@@ -57,7 +48,7 @@ server {
   proxy_redirect off;
 
   location / {
-    proxy_pass http://rails_<%= @app_server["name"] %>;
+    proxy_pass http://<%= @resource.application.name %>;
   }
 }
 <% end %>

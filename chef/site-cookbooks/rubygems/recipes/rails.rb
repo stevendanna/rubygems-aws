@@ -67,6 +67,17 @@ application "rubygems" do
     only_if { node['roles'].include?('rubygems_unicorn') }
   end
 
+  r = nginx_load_balancer do
+    application_server_role "rubygems_unicorn"
+    template "nginx_balancer.conf.erb"
+    server_name node["application"]["server_names"]
+    ssl node["application"]["use_ssl"]
+    ssl_certificate ::File.join(node["nginx"]["dir"], "certs", node["application"]["ssl_cert"])
+    ssl_certificate_key ::File.join(node["nginx"]["dir"], "certs", node["application"]["ssl_key"])
+    only_if { node['roles'].include?('balancer') }
+  end
+  r.cookbook_name = "rubygems"
+
   before_symlink do
     ruby_block "remove_run_migrations" do
       block do
