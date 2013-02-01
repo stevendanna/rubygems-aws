@@ -6,6 +6,8 @@
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
+include_recipe "rubygems::default"
+
 app                       = node.run_state[:app]
 rails_env                 = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
 rails_root                = app['rails_root']
