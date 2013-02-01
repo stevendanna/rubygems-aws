@@ -5,9 +5,17 @@
 # Handles postgresql setup after postgresql server is running
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-app                   = node.run_state[:app]
-rails_postgresql_user = app["id"]
-rails_env             = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
+
+app                       = node.run_state[:app]
+rails_env                 = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
+rails_root                = app['rails_root']
+app_env                   = "#{app['id']}-#{rails_env}"
+sudo_name                 = app_env.tr("-", "_").upcase
+bundle_cmd                = "bundle"
+first_server_name         = app["server_names"][0]
+db_name                   = app_env.tr("-", "_")
+rails_postgresql_user     = app["id"]
+
 
 # this awkward conditional is to account for not storing plaintext
 # passwords in the open source repository. The node attribute will be
