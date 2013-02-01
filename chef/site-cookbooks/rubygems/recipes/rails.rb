@@ -20,6 +20,12 @@ else
   rails_postgresql_password = search(:node, "roles:rubygems_db_master")[0]['application']["rails_postgresql_password_#{rails_env}"]
 end
 
+# Ensure that both the migration role AND the attribute are set before
+# we run migrations.
+if node['roles'].include?("rubygems_run_migrations") && node['application']['rubygems']['run_migrations']
+  run_migrations = true
+end
+
 # application directory
 directory "/applications/#{app['id']}" do
   owner  "deploy"
@@ -36,7 +42,7 @@ application "rubygems" do
   owner "deploy"
   group "deploy"
   packages %w{libpq-dev}
-  migrate node['roles'].include?('rubygems_db_master')
+  migrate run_migrations
 
   r = rails do
     gems %w{bundler}
@@ -57,6 +63,17 @@ application "rubygems" do
     bundler true
     bundle_command "/usr/local/bin/bundle"
     only_if { node['roles'].include?('rubygems_unicorn') }
+  end
+
+  before_symlink do
+    ruby_block "remove_run_migrations" do
+      block do
+        if node.role?("#{app['id']}_run_migrations")
+          Chef::Log.info("Migrations were run, removing role[#{app['id']}_run_migrations]")
+          node.run_list.remove("role[#{app['id']}_run_migrations]")
+        end
+      end
+    end
   end
 end
 
