@@ -71,6 +71,7 @@ application "rubygems" do
     application_server_role "rubygems_unicorn"
     template "nginx_balancer.conf.erb"
     server_name node["application"]["server_names"] || "rubygems.org"
+    application_port node["application"]["internal_port"]
     ssl node["application"]["use_ssl"]
     ssl_certificate ::File.join(node["nginx"]["dir"], "certs", node["application"]["ssl_cert"])
     ssl_certificate_key ::File.join(node["nginx"]["dir"], "certs", node["application"]["ssl_key"])
