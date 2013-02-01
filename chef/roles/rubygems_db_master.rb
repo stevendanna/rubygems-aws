@@ -14,5 +14,8 @@ default_attributes(
     "pg_hba" => [
       "host rubygems_production rubygems 127.0.0.1/32 password"
     ]
+  },
+  "monit" => {
+    "monitors" => ["postgresql"]
   }
 )

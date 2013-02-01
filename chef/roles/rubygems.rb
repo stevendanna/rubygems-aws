@@ -16,4 +16,7 @@ run_list(
 
 default_attributes(
   # application data is in the apps/rubygems data bag
+  "monit" => {
+    "monitors" => ["nginx"]
+  }
 )

@@ -5,3 +5,9 @@ run_list(
   "recipe[nginx::server]",
   "recipe[rubygems::balancer]"
 )
+
+default_attributes(
+  "monit" => {
+    "monitors" => ["nginx"]
+  }
+)

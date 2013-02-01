@@ -4,3 +4,9 @@ description "Servers that run redis for the RubyGems.org app"
 run_list(
   "recipe[redis::server]"
 )
+
+default_attributes(
+  "monit" => {
+    "monitors" => ["redis"]
+  }
+)

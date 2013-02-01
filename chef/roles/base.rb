@@ -32,9 +32,7 @@ default_attributes(
     "mailto" => "github@phlippers.net"
   },
   "monit" => {
-    "monitors" => [
-      "cron", "filesystem", "ntp", "postfix", "postgresql", "redis", "nginx", "memcached"
-    ]
+    "monitors" => ["cron", "filesystem", "ntp", "postfix"]
   },
   "ntp" => {
     "is_server" => false,
