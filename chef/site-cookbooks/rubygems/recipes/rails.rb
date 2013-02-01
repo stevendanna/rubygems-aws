@@ -36,7 +36,7 @@ application "rubygems" do
   owner "deploy"
   group "deploy"
   packages %w{libpq-dev}
-  migrate true
+  migrate node['roles'].include?('rubygems_db_master')
 
   r = rails do
     gems %w{bundler}
