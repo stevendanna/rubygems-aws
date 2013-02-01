@@ -6,5 +6,6 @@ run_list(
   "role[rubygems_memcached]",
   "role[rubygems_redis]",
   "role[rubygems_db_master]",
+  "role[rubygems_unicorn]",
   "role[rubygems]"
 )
