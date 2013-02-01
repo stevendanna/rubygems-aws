@@ -8,6 +8,7 @@
 app                   = node.run_state[:app]
 rails_postgresql_user = app["id"]
 rails_env             = node.chef_environment =~ /^_default$/ ? "production" : node.chef_environment
+db_name               = "#{app['id']}_#{rails_env}"
 
 # this awkward conditional is to account for not storing plaintext
 # passwords in the open source repository. The node attribute will be
