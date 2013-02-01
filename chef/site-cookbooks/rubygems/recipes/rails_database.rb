@@ -35,4 +35,3 @@ pg_database db_name do
   template "template0"
   locale "en_US.UTF8"
 end
-
