@@ -20,16 +20,14 @@
 
 define :nginx_site, :enable => true do
   if params[:enable]
-    execute "nxensite #{params[:name]}" do
-      command "/usr/sbin/nxensite #{params[:name]}"
+    link "#{node["nginx"]["dir"]}/sites-enabled/#{params[:name]}" do
+      to "#{node["nginx"]["dir"]}/sites-available/#{params[:name]}"
       notifies :reload, "service[nginx]"
-      not_if do ::File.symlink?("#{node['nginx']['dir']}/sites-enabled/#{params[:name]}") end
     end
   else
-    execute "nxdissite #{params[:name]}" do
-      command "/usr/sbin/nxdissite #{params[:name]}"
+    file "#{node["nginx"]["dir"]}/sites-available/#{params[:name]}" do
+      action :delete
       notifies :reload, "service[nginx]"
-      only_if do ::File.symlink?("#{node['nginx']['dir']}/sites-enabled/#{params[:name]}") end
     end
   end
 end
