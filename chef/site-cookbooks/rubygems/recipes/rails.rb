@@ -56,6 +56,7 @@ application "rubygems" do
     port "3000"
     bundler true
     bundle_command "/usr/local/bin/bundle"
+    only_if { node['roles'].include?('rubygems_unicorn') }
   end
 end
 
