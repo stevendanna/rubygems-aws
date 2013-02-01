@@ -14,17 +14,9 @@ first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
 
-# this awkward conditional is to account for not storing plaintext
-# passwords in the open source repository. The node attribute will be
-# be used in the first part if it exists, and fall back to generating
-# a random password (and saving the node to the server).
-if node['application'].attribute?("rails_postgresql_password_#{rails_env}")
-  rails_postgresql_password = node['application']["rails_postgresql_password_#{rails_env}"]
-else
-  rails_postgresql_password = secure_password
-  node.set_unless["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
-  node.save
-end
+rubygems_db_masters = search(:node, "role:rubygems_db_master AND chef_environment:#{node.chef_environment}")
+if rubygems_db_masters.empty? then rubygems_db_masters << node
+rails_postgresql_password = rubygems_db_master[0]['application']["rails_postgresql_password_#{rails_env}"]
 
 # application directory
 directory "/applications/#{app['id']}" do
@@ -34,19 +26,6 @@ directory "/applications/#{app['id']}" do
   recursive true
 end
 
-# create a DB user
-pg_user rails_postgresql_user do
-  privileges superuser: false, createdb: false, login: true
-  password rails_postgresql_password
-end
-
-# create a database
-pg_database db_name do
-  owner app['id']
-  encoding "utf8"
-  template "template0"
-  locale "en_US.UTF8"
-end
 
 application "rubygems" do
   path app['rails_root']

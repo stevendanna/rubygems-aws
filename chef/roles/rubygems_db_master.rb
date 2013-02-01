@@ -3,7 +3,8 @@ description "The role for the primary database server for the RubyGems.org app"
 
 run_list(
   "role[base]",
-  "recipe[postgresql::server]"
+  "recipe[postgresql::server]",
+  "recipe[rubygems::rails_database]"
 )
 
 default_attributes(
