@@ -17,6 +17,7 @@ bundle_cmd                = "bundle"
 first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
+
 hba_cidr = if attribute?('ec2')
              # ec2 private subnet
              "10.0.0.0/8"
@@ -34,17 +35,8 @@ node.set['postgresql']['pg_hba'] = [{
   "method" => "md5"
 }]
 
-# this awkward conditional is to account for not storing plaintext
-# passwords in the open source repository. The node attribute will be
-# be used in the first part if it exists, and fall back to generating
-# a random password (and saving the node to the server).
-if node['application'].attribute?("rails_postgresql_password_#{rails_env}")
-  rails_postgresql_password = node['application']["rails_postgresql_password_#{rails_env}"]
-else
-  rails_postgresql_password = secure_password
-  node.set_unless["application"]["rails_postgresql_password_#{rails_env}"] = rails_postgresql_password
-  node.save
-end
+# The password is stored in a data bag that is not in the repository.
+rails_postgresql_password = node.run_state[:app_secrets]["application"][rails_env]["rails_postgresql_password"]
 
 # create a DB user
 pg_user rails_postgresql_user do
