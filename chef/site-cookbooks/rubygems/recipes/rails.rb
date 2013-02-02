@@ -18,17 +18,9 @@ rails_postgresql_user     = app["id"]
 # It is loaded into the node's run state in the default recipe.
 rails_postgresql_password = node.run_state[:app_secrets]["application"][rails_env]["rails_postgresql_password"]
 
-if node["roles"].include?("rubygems_redis")
-  node["application"]["redis_url"] = "redis://localhost:6379/0"
-else
-  redis_ip = search(:node, "roles:rubygems_redis")[0]["redis"]["bind"]
-  node["application"]["redis_url"] = "redis://#{redis_ip}:6379/0"
-end
-
-run_migrations = false
-
 # Ensure that both the migration role AND the attribute are set before
 # we run migrations.
+run_migrations = false
 if node['roles'].include?("rubygems_run_migrations") && node['application']['rubygems']['run_migrations']
   run_migrations = true
 end

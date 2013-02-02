@@ -4,6 +4,14 @@
 #
 
 app = node.run_state[:app]
+
+if node["roles"].include?("rubygems_redis")
+  app["REDIS_URL"] = "redis://localhost:6379/0"
+else
+  redis_ip = search(:node, "roles:rubygems_redis")[0]["redis"]["bind"]
+  app["REDIS_URL"] = "redis://#{redis_ip}:6379/0"
+end
+
 # chef can't deal with an empty file
 bash "ensure /etc/environment has content" do
   code %(echo "# touched at `date`" > /etc/environment)
