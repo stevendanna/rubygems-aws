@@ -3,7 +3,7 @@ require 'capistrano/ext/multistage'
 set :stages, %w(vagrant vagrant-lb ec2)
 set :default_stage, "vagrant"
 
-default_run_options[:pty] = true 
+default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
 namespace :bootstrap do
@@ -68,7 +68,7 @@ namespace :chef do
   end
 
   %w(db app lb).each do |role|
-  
+
     task role, :roles => [role] do
       find_and_execute_task("librarian_chef:install")
       system("tar czf 'chef.tar.gz' -C chef/ .")

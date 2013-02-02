@@ -11,3 +11,7 @@ run_list(
   "recipe[rubygems::rails]",
   "recipe[rubygems::rails_nginx]"
 )
+
+default_attributes({"application" => {
+                       "database_server" => "10.249.66.172"}
+                   })

@@ -11,6 +11,7 @@ bundle_cmd        = "bundle"
 company_name      = node["application"]["company_name"]
 first_server_name = node["application"]["server_names"][0]
 db_name                   = app_env.tr("-", "_")
+rails_postgresql_host     = node["application"]["database_server"]
 rails_postgresql_user     = node["application"]["name"]
 rails_postgresql_password = Digest::MD5.hexdigest(app_env.reverse).reverse.tr("A-Za-z", "N-ZA-Mn-za-m")
 
@@ -26,20 +27,6 @@ directory "/applications/#{node["application"]["name"]}" do
   owner  "deploy"
   group  "deploy"
   action :create
-end
-
-# create a DB user
-pg_user rails_postgresql_user do
-  privileges superuser: false, createdb: false, login: true
-  password rails_postgresql_password
-end
-
-# create a database
-pg_database db_name do
-  owner rails_postgresql_user
-  encoding "utf8"
-  template "template0"
-  locale "en_US.UTF8"
 end
 
 application "rubygems" do
@@ -59,7 +46,7 @@ application "rubygems" do
       database db_name
       username rails_postgresql_user
       password rails_postgresql_password
-      host "localhost"
+      host rails_postgresql_host
     end
   end
   r.cookbook_name = "rubygems"
