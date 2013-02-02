@@ -18,7 +18,7 @@ first_server_name         = app["server_names"][0]
 db_name                   = app_env.tr("-", "_")
 rails_postgresql_user     = app["id"]
 
-hba_cidr = if attribute?('ec2')
+hba_cidr = if node.attribute?('ec2')
              # ec2 private subnet
              "10.0.0.0/8"
            else
