@@ -9,13 +9,11 @@ run_list(
 )
 
 default_attributes(
+  # Other postgresql specific attributes are set dynamically in the
+  # rubygems::rails_database recipe.
   "postgresql" => {
-    "listen_addresses" => "0.0.0.0",
     "version" => "9.2",
     "ssl" => false,
-    "pg_hba" => [
-      "host rubygems_production rubygems 127.0.0.1/32 password"
-    ]
   },
   "monit" => {
     "monitors" => ["postgresql"]
