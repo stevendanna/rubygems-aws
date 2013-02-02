@@ -54,9 +54,5 @@ default_attributes(
     "aliases" => {
       "root" => "github@phlippers.net"
     }
-  },
-  "resolver" => {
-    "search" => "rubygem.org",
-    "nameservers" => ["8.8.8.8", "8.8.4.4"]
   }
 )

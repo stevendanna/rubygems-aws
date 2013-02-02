@@ -4,7 +4,6 @@ run_list(
   "recipe[curl]",
   "recipe[ntp]",
   "recipe[hostname]",
-  "recipe[resolver]",
   "recipe[rsync]",
   "recipe[rubygems::system_ruby]",
   "recipe[xml]",
