@@ -1,6 +1,7 @@
 name "rubygems"
 description "The role with rails application recipes for rubygems"
 run_list(
+  "role[base]",
   "recipe[git]",
   "recipe[nginx::server]",
   "recipe[nodejs]",
